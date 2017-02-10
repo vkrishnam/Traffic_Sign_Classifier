@@ -1,18 +1,16 @@
-#**Traffic Sign Recognition** 
+#**Traffic Sign Recognition - Project#2 - CarND** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+##Project Writeup
 
 ---
 
 **Build a Traffic Sign Recognition Project**
 
-The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
+The goals of this project are the following:
+* Load the GTSRB training and test dataset (http://benchmark.ini.rub.de/index.php?section=gtsrb&subsection=dataset)  
 * Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
+* Design, train and test a model architecture using TensorFlow
+* Use the model to make predictions on new images, downloaded from Internet.
 * Analyze the softmax probabilities of the new images
 * Summarize the results with a written report
 
@@ -27,38 +25,42 @@ The goals / steps of this project are the following:
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image9]: ./snapshots/Sign.png "Table of dataset"
+[image10]: ./snapshots/training_dataset_visualization.png "train_visual"
 
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+## Main Submission files
+###Here is the [HTML of IPython Notebook](https://github.com/vkrishnam/Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.html) which captures the snapshot of the all code cells being executed and their results.  
 
 ---
-###Writeup / README
+###GitHub Repo
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+Here is a link to my [project code](https://github.com/vkrishnam/Traffic_Sign_Classifier/)
 
 ###Data Set Summary & Exploration
 
-####1. Provide a basic summary of the data set and identify where in your code the summary was done. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
+####1. The Traffic sign dataset is loaded into the project using pickle module by reading the .p files.
 
-The code for this step is contained in the second code cell of the IPython notebook.  
+The code for this step is contained in the first few code cells of the IPython notebook.  
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+Used numpy library to calculate summary statistics of the traffic signs data set:
 
-* The size of training set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 39209
+* The size of test set is 12630
+* The shape of a traffic sign image is (32, 32, 3)
+* The number of unique classes/labels in the data set is 43
 
-####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
+####2. An exploratory visualization of the dataset.
 
 The code for this step is contained in the third code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a table showing how the dataset is spread.
 
-![alt text][image1]
+![alt text][image9]
+![alt text][image10]
+
+Just to make a note that the images in the dataset are either too dark or too bright!!! 
+
 
 ###Design and Test a Model Architecture
 
