@@ -25,8 +25,9 @@ The goals of this project are the following:
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
-[image9]: ./snapshots/Sign.PNG "Table of dataset"
+[image9]: ./snapshots/tableSigns.png "Table of dataset"
 [image10]: ./snapshots/training_dataset_visualization.png "train_visual"
+[image11]: ./snapshots/afterPreprocessing.png "afterPreProcessing_visual"
 
 ## Main Submission files
 ###Here is the [HTML of IPython Notebook](https://github.com/vkrishnam/Traffic_Sign_Classifier/blob/master/Traffic_Sign_Classifier.html) which captures the snapshot of the all code cells being executed and their results.  
@@ -55,34 +56,46 @@ Used numpy library to calculate summary statistics of the traffic signs data set
 The code for this step is contained in the third code cell of the IPython notebook.  
 
 Here is an exploratory visualization of the data set. It is a table showing how the dataset is spread.
+Some points to note:
+1. The images in the dataset are either too dark or too bright!!! 
+2. Majority of the images are triangles and real distintion among them is the details inside the traingles.
+3. The background of the images has varied content.
 
-![alt text][image9]
+![Table of Signs][image9]
+
+
 ![alt text][image10]
 
-Just to make a note that the images in the dataset are either too dark or too bright!!! 
+
 
 
 ###Design and Test a Model Architecture
 
-####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
+####1. Pre-Processing:
 
 The code for this step is contained in the fourth code cell of the IPython notebook.
 
-As a first step, I decided to convert the images to grayscale because ...
+- As a first step, Image normalization is tried out, as we noted while visualizing the dataset that the images are either too bright or too dark. Even here two types of normalization are tried out. 1. Linear scaling and 2. Histogram equalization. The second method is superior as it spreads the distribution uniformly across the range.
 
-Here is an example of a traffic sign image before and after grayscaling.
+- As a second step, convert the image to YUV color space/domain as majority of the information is Luma and even to seperate sign on color basis UV would be better.
 
-![alt text][image2]
+- As a last and third step we find a mean image among all the training dataset, and remove mean image from the images. This step is more called Mean normalization is to remove the variations of different backgrounds, lightings etc.
 
-As a last step, I normalized the image data because ...
+Here is an snapshot of different traffic sign images after pre-processing.
 
-####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
+![alt text][image11]
+
+
+####2. Setting up training, validation and testing data. 
 
 The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
 
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
+As the dataset originally do not have validation set, one such validation set had to be created for analysing the progress of optimization during training process.
+While the test dataset is untouched, we observe that different labels among the 43 signs have varying amount of training samples in the training dataset.
+As we wanted a training set which has good representation of each of the classes, we went ahead with choosing 20% of training samples of each of the class as validation dataset.
 
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
+So final training set had 31368 number of images. 
+My validation set and test set had 7841 and 12630 number of images.
 
 The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
 
