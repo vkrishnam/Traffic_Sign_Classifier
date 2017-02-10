@@ -25,7 +25,7 @@ The goals of this project are the following:
 [image6]: ./examples/placeholder.png "Traffic Sign 3"
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
-[image9]: ./snapshots/Sign.png "Table of dataset"
+[image9]: ./snapshots/Sign.PNG "Table of dataset"
 [image10]: ./snapshots/training_dataset_visualization.png "train_visual"
 
 ## Main Submission files
