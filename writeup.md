@@ -36,7 +36,7 @@ The goals of this project are the following:
 ###GitHub Repo
 
 
-Here is a link to my [project code](https://github.com/vkrishnam/Traffic_Sign_Classifier/)
+Here is a link to [project code](https://github.com/vkrishnam/Traffic_Sign_Classifier/)
 
 ###Data Set Summary & Exploration
 
@@ -56,10 +56,12 @@ Used numpy library to calculate summary statistics of the traffic signs data set
 The code for this step is contained in the third code cell of the IPython notebook.  
 
 Here is an exploratory visualization of the data set. It is a table showing how the dataset is spread.
+
 Some points to note:
-1. The images in the dataset are either too dark or too bright!!! 
-2. Majority of the images are triangles and real distintion among them is the details inside the traingles.
-3. The background of the images has varied content.
+
+* The images in the dataset are either too dark or too bright!!! 
+* Majority of the images are triangles and circles. Real distintion among them is the details inside those traingles and circles.
+* The background of the images has varied content.
 
 ![Table of Signs][image9]
 
@@ -75,7 +77,12 @@ Some points to note:
 
 The code for this step is contained in the fourth code cell of the IPython notebook.
 
-- As a first step, Image normalization is tried out, as we noted while visualizing the dataset that the images are either too bright or too dark. Even here two types of normalization are tried out. 1. Linear scaling and 2. Histogram equalization. The second method is superior as it spreads the distribution uniformly across the range.
+- As a first step, Image normalization is tried out, as we noted while visualizing the dataset that the images are either too bright or too dark. Even here two types of normalization are tried out. 
+
+1. Linear scaling and 
+2. Histogram equalization. 
+
+The second method is superior as it spreads the distribution uniformly across the range.
 
 - As a second step, convert the image to YUV color space/domain as majority of the information is Luma and even to seperate sign on color basis UV would be better.
 
@@ -94,41 +101,52 @@ As the dataset originally do not have validation set, one such validation set ha
 While the test dataset is untouched, we observe that different labels among the 43 signs have varying amount of training samples in the training dataset.
 As we wanted a training set which has good representation of each of the classes, we went ahead with choosing 20% of training samples of each of the class as validation dataset.
 
-So final training set had 31368 number of images. 
-My validation set and test set had 7841 and 12630 number of images.
-
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
+So final Training set had 31368 number of images. 
+Validation set and Test set had 7841 and 12630 number of images respectively.
 
 
-####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+####3. Model architecture 
 
-The code for my final model is located in the seventh cell of the ipython notebook. 
+To start with, used the LeNet Model architecture used for the MNIST except for the input layer changed to the 32x32x3 instead of 28x28x3.
+This LeNet model trained for 10 epochs and with learning rate of 0.001 could achieve a validation accurary of ~0.90.
+But accuracy could not go beyond 0.90.
 
-My final model consisted of the following layers:
+Then a modified LeNet architecture named TscNet which is described as follows is tried out.
 
+The code for final model is located in the sixth cell of the ipython notebook. 
+
+Final model consisted of the following layers:
+
+|:---------------------:|:---------------------------------------------:| 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Input         		| 32x32x3 YUV image   							| 
+| Convolution 1x1     	| 1x1 stride, same padding, outputs 32x32x3 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 30x30x6 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 15x15x6  				|
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 11x11x16 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x6    				|
+| Fully connected		| Input 400, Output 120							|
+| RELU					|												|
+| Fully connected		| Input 120, Output 84							|
+| RELU					|												|
+| Fully connected		| Input 84, Output 10							|
+| SoftMax				| Output 10 probs								|
 |						|												|
-|						|												|
+|:---------------------:|:---------------------------------------------:| 
  
+The initial conv layer of 1x1 is motivated by the Inception or NiN concept to find the latent features.
+Also the later on Conv layers filter sizes are gradually increased from 3x3 to 5x5 to increase the receptive field at each subsequent layer.
 
 
-####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+####4. Training the Model
 
-The code for training the model is located in the eigth cell of the ipython notebook. 
+Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+
+The code for training the model is located in the senventh cell of the ipython notebook. 
 
 To train the model, I used an ....
 
