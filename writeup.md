@@ -20,11 +20,11 @@ The goals of this project are the following:
 [image1]: ./examples/visualization.jpg "Visualization"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image4]: ./newImages/120px-Zeichen_131svg_Traffic_signals.png "Traffic Sign 1"
+[image5]: ./newImages/Zeichen_112_–_Unebene_Fahrbahn,_StVO_1970svg_Bumpy_road.png "Traffic Sign 2"
+[image6]: ./newImages/Zeichen_136-10_-_Kinder,_Aufstellung_rechts,_StVO_1992svg_ChildrenCrossing.png "Traffic Sign 3"
+[image7]: ./newImages/Zeichen_206svg_Stop.png "Traffic Sign 4"
+[image8]: ./newImages/Zeichen_267svg_NoEntry.png "Traffic Sign 5"
 [image9]: ./snapshots/tableSigns.png "Table of dataset"
 [image10]: ./snapshots/training_dataset_visualization.png "train_visual"
 [image11]: ./snapshots/afterPreprocessing.png "afterPreProcessing_visual"
@@ -129,7 +129,8 @@ Final model consisted of the following layers:
 | Convolution 5x5     	| 1x1 stride, valid padding, outputs 11x11x16 	|
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 5x5x6    				|
-| Fully connected		| Input 400, Output 120							|
+| Concatenation         | Inputs 400, 1350, Output 1750                 |
+| Fully connected		| Input 1750, Output 120						|
 | RELU					|												|
 | Fully connected		| Input 120, Output 84							|
 | RELU					|												|
@@ -138,81 +139,121 @@ Final model consisted of the following layers:
 |						|												|
 |:---------------------:|:---------------------------------------------:| 
  
-The initial conv layer of 1x1 is motivated by the Inception or NiN concept to find the latent features.
+The initial conv layer of 1x1 is motivated by the Inception or NiN (Network in Network) concept to find the latent features.
 Also the later on Conv layers filter sizes are gradually increased from 3x3 to 5x5 to increase the receptive field at each subsequent layer.
+The result of the 3x3 convolution and 5x5 convolutions are concatenated to feed into Fully Connected layer, thats becuase the 3x3 activation might capture the very low level detail which might be useful for the end classification.
+Thats motivated from the reading of the paper "Traffic Sign Recognition with Multi-Scale Convolutional Networks" (http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf).
+
 
 
 ####4. Training the Model
 
-Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+Training is done with SoftMax Cross Entropy as the loss function and Adam Optimizer is used over SGD (Stocastic Gradient Descent).  Batch size of 128, 20 epochs and (hyperparameters) learning rate of 0.001 is choosen.
 
-The code for training the model is located in the senventh cell of the ipython notebook. 
+The code for training the model is located in the seventh cell of the ipython notebook. 
 
-To train the model, I used an ....
 
-####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+####5. Approach taken for finding a solution. 
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+Final solution is arrived as a iterative process.
+
+First the effort was put into getting the pipeline (Dataset split, Model, Training and Validation Accuracy) up without any Pre-Processing of dataset and LeNet as the Model Architecture.
+This model was not able to learn much as the accuracy cannot got beyond ~0.85. Also training accuracies where quite low.
+It is understood that the training dataset of different signs are indistinguishable for humans itself. That highlighted the need for pre-processing.
+
+Then the pre-processing steps (histogram equalization, mean normalization) are implemented to improve the accuracies further.
+
+The TscNet model architecture is worked out upon reading and borrowing ideas from different papers.
+Also analyzing the dataset, it became clear that the shapes have got significance in classifing the sign than than the color. So the YUV data is feed to the network rather than RGB.
+The initial conv layer of 1x1 is motivated by the Inception or NiN (Network in Network) concept to find the latent features.
+Also the later on Conv layers filter sizes are gradually increased from 3x3 to 5x5 to increase the receptive field at each subsequent layer.
+The result of the 3x3 convolution and 5x5 convolutions are concatenated to feed into Fully Connected layer, thats becuase the 3x3 activation might capture the very low level detail which might be useful for the end classification.
+Thats motivated from the reading of the paper "Traffic Sign Recognition with Multi-Scale Convolutional Networks" (http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf).
+
+The code for calculating the accuracy of the model is located in the eigth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* training set accuracy of 0.993
+* validation set accuracy of 0.970
+* test set accuracy of 0.898
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
-
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
  
 
 ###Test a Model on New Images
 
 ####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+Here are five German traffic signs that were found on the web:
 
 ![alt text][image4] ![alt text][image5] ![alt text][image6] 
 ![alt text][image7] ![alt text][image8]
 
-The first image might be difficult to classify because ...
+The images might be difficult to classify because the stop sign, bumpy road sign and traffic light sign might need the detailed edge information and also there are very less of those training samples compared to other signs in the training dataset.
 
-####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
+####2. The model's predictions on new traffic signs and compare the results to predicting on the test set. 
 
-The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
+
+The code for making predictions on my final model is located in the ninth cell of the Ipython notebook.
 
 Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Traffic Signals      	| Traffic Signals 								| 
+| Bumpy road     		| Bumpy road									|
+| Children crossing		| Children crossing								|
+| Stop   	      		| Speed limit (30km/h)			 				|
+| No Entry	    		| No Entry          							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. 
+This compares favorably to the accuracy on the test set of ~0.898
+This is also reflected in the prediction accuracy for those classes of images in the test set.
+Predctions accuracy in testSet for label 26  is : 0.789
+Predctions accuracy in testSet for label 22  is : 0.850
+Predctions accuracy in testSet for label 28  is : 0.773
+Predctions accuracy in testSet for label 14  is : 0.970
+Predctions accuracy in testSet for label 17  is : 0.975
 
-####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
+####3. How certain the model is when predicting on each of the five new images:
+
+By looking at the softmax probabilities for each prediction, we can say the model is predicting with high confidence as the probabilities of the predictions are in the high 0.9 range.
 
 The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the first image, the model is relatively sure that this is a Traffic signal (probability of 0.999), and the image does contain a Traffic signals. 
+The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .9999        			| Traffic Signals								| 
+| .00005   				| Pedestrians									|
 
 
-For the second image ... 
+For the second image ...
+#############################################################
+newImage#     0 : Actual label is  26
+  Top5 predictions:    [26 27 18 24 30 ]
+  Top5 probabilities:  [  9.99935031e-01   5.99802770e-05   5.02341345e-06   5.95297908e-11
+   1.92929752e-11]
+#############################################################
+newImage#     1 : Actual label is  22
+  Top5 predictions:    [22 29 25 24 15]
+  Top5 probabilities:  [  9.99999046e-01   8.80185326e-07   7.91025272e-08   5.18264154e-10
+   1.54535603e-11]
+#############################################################
+newImage#     2 : Actual label is  28
+  Top5 predictions:    [28 30 29 25 27 ]
+  Top5 probabilities:  [  9.99999881e-01   1.11182516e-07   1.33085996e-08   2.94230729e-09
+   6.94131363e-10]
+#############################################################
+newImage#     3 : Actual label is  14
+  Top5 predictions:    [ 1 14  3 10  4]
+  Top5 probabilities:  [  9.99981880e-01   1.52240200e-05   2.86367231e-06   4.90745862e-08
+   2.41365883e-09]
+#############################################################
+newImage#     4 : Actual label is  17
+  Top5 predictions:    [17 14 22 32 34]
+  Top5 probabilities:  [  1.00000000e+00   3.67149226e-15   7.48519839e-16   1.07239275e-16
+   4.62220254e-17]
+#############################################################
