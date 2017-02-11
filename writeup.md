@@ -117,7 +117,6 @@ The code for final model is located in the sixth cell of the ipython notebook.
 
 Final model consisted of the following layers:
 
-|:---------------------:|:---------------------------------------------:| 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 YUV image   							| 
@@ -137,7 +136,6 @@ Final model consisted of the following layers:
 | Fully connected		| Input 84, Output 10							|
 | SoftMax				| Output 10 probs								|
 |						|												|
-|:---------------------:|:---------------------------------------------:| 
  
 The initial conv layer of 1x1 is motivated by the Inception or NiN (Network in Network) concept to find the latent features.
 Also the later on Conv layers filter sizes are gradually increased from 3x3 to 5x5 to increase the receptive field at each subsequent layer.
